@@ -1,2 +1,0 @@
-# analisis-algoritmos
-Algoritmos sencillitos
