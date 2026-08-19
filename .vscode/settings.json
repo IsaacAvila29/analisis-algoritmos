@@ -8,20 +8,10 @@
     "clangd.path": "/usr/bin/clangd",
     "clangd.arguments": [
         "--header-insertion=never",
-        "--clang-tidy",
         "--background-index",
         "--completion-style=detailed"
     ],
 
-    "editor.formatOnSave": true,
-    "[cpp]": {
-        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
-        "editor.tabSize": 4,
-        "editor.insertSpaces": true
-    },
-    "[c]": {
-        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
-    },
     "[makefile]": {
         "editor.insertSpaces": false
     },
