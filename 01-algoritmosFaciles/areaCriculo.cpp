@@ -10,4 +10,6 @@ int main() {
     area = (3.1416) * ((radio * radio));
     cout << "area: " << area;
 
+    return 0;
+
 }
