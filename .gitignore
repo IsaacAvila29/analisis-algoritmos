@@ -1,0 +1,10 @@
+# Binarios y artefactos de compilación
+bin/
+*.o
+*.out
+*.dSYM/
+a.out
+
+# clangd / editor
+.cache/
+.DS_Store

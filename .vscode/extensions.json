@@ -1,0 +1,12 @@
+{
+    "recommendations": [
+        "llvm-vs-code-extensions.vscode-clangd",
+        "vadimcn.vscode-lldb",
+        "usernamehw.errorlens",
+        "EditorConfig.EditorConfig"
+    ],
+    "unwantedRecommendations": [
+        "ms-vscode.cmake-tools",
+        "franneck94.c-cpp-runner"
+    ]
+}

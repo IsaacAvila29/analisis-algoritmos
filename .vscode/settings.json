@@ -1,0 +1,42 @@
+{
+    // clangd como servidor de lenguaje; desactivar IntelliSense de cpptools para evitar conflicto
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "C_Cpp.autocomplete": "disabled",
+    "C_Cpp.errorSquiggles": "disabled",
+    // Ocultar el botón ▷ "Debug C/C++ File" de cpptools (ignora launch.json y usa cppdbg)
+    "C_Cpp.debugShortcut": false,
+    "clangd.path": "/usr/bin/clangd",
+    "clangd.arguments": [
+        "--header-insertion=never",
+        "--clang-tidy",
+        "--background-index",
+        "--completion-style=detailed"
+    ],
+
+    "editor.formatOnSave": true,
+    "[cpp]": {
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true
+    },
+    "[c]": {
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+    },
+    "[makefile]": {
+        "editor.insertSpaces": false
+    },
+
+    "files.associations": {
+        "*.hpp": "cpp",
+        "*.tpp": "cpp"
+    },
+    "files.exclude": {
+        "**/bin": true,
+        "**/.cache": true,
+        "**/*.dSYM": true
+    },
+
+    // Desactivar el runner/cmake aunque sigan instalados
+    "C_Cpp_Runner.useMsvc": false,
+    "cmake.configureOnOpen": false
+}
