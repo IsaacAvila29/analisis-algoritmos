@@ -1,33 +1,51 @@
-#Dependiendo de la edad
+"""Clasifica a una persona por etapa de vida segun su edad (version if/elif).
 
-iterando = True
-while iterando:
+La misma logica resuelta con match/case esta en edades2.py.
+"""
 
-    try:
-        edad = int(input("Introduce tu edad: "))
-    except ValueError:
-        print("Por favor, introduce un número válido.")
-        continue
 
-    if edad >= 0 and edad <= 5:
-        print("Eres un niño pequeño")
-    elif edad >= 6 and edad < 12:
-        print("Eres un niño")
-    elif edad >= 12 and edad < 15:
-        print("Eres un puberto")
-    elif edad >= 15 and edad < 18:
-        print("Eres un adolescente")
-    elif (edad >= 18 and edad <=35) :
-        print("Eres un adulto joven")
-    elif (edad >36 and edad <=65):
-        print("Eres tercera edad")
-    elif (edad > 65):
-        print("Eres veterano")
+def clasificar_edad(edad: int) -> str:
+    """Devuelve la etapa de vida que corresponde a `edad`.
+
+    Lanza ValueError si la edad es negativa.
+    """
+    if edad < 0:
+        raise ValueError("La edad no puede ser negativa")
+
+    if edad <= 5:
+        return "Eres un niño pequeño"
+    elif edad <= 11:
+        return "Eres un niño"
+    elif edad <= 14:
+        return "Eres un puberto"
+    elif edad <= 17:
+        return "Eres un adolescente"
+    elif edad <= 35:
+        return "Eres un adulto joven"
+    elif edad <= 65:
+        return "Eres tercera edad"
     else:
-        print("Edad no válida")
-        iterando = False
+        return "Eres veterano"
 
 
+def pedir_edad() -> int | None:
+    """Pide una edad por teclado. Devuelve None cuando el usuario quiere salir."""
+    entrada = input("Introduce tu edad (Enter para salir): ").strip()
+    if entrada == "":
+        return None
+    return int(entrada)
 
 
+def main() -> None:
+    while True:
+        try:
+            edad = pedir_edad()
+            if edad is None:
+                break
+            print(clasificar_edad(edad))
+        except ValueError as error:
+            print(f"Entrada invalida: {error}")
 
+
+if __name__ == "__main__":
+    main()

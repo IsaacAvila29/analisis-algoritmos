@@ -1,23 +1,46 @@
-def busqueda_binaria(lista, objetivo):
-	"""Devuelve el índice de objetivo en una lista ordenada o -1 si no existe."""
-	izquierda = 0
-	derecha = len(lista) - 1
+"""Busqueda binaria sobre una lista ordenada.
 
-	while izquierda <= derecha:
-		medio = (izquierda + derecha) // 2
-		print(f"Izquierda: {izquierda}, Derecha: {derecha}, Medio: {medio}")
+Complejidad: O(log n) en tiempo, O(1) en espacio.
+Precondicion: `lista` debe estar ordenada de forma ascendente.
+"""
 
-		if lista[medio] == objetivo:
-			print(f"Objetivo encontrado en el índice {medio}")
-			return medio
-		if lista[medio] < objetivo:
-			print(f"{lista[medio]} es menor que {objetivo}; buscando a la derecha")
-			izquierda = medio + 1
-		else:
-			print(f"{lista[medio]} es mayor que {objetivo}; buscando a la izquierda")
-			derecha = medio - 1
 
-	print("Objetivo no encontrado")
-	return -1
+def busqueda_binaria(lista: list[int], objetivo: int, traza: bool = False) -> int:
+    """Devuelve el indice de `objetivo` en `lista`, o -1 si no existe.
 
-busqueda_binaria([1,2,3,4,5,6,7,8], 9)
+    Con traza=True imprime cada paso (util para ver como se parte el rango).
+    """
+    izquierda = 0
+    derecha = len(lista) - 1
+
+    while izquierda <= derecha:
+        medio = (izquierda + derecha) // 2
+
+        if traza:
+            print(f"  izquierda={izquierda} derecha={derecha} medio={medio} valor={lista[medio]}")
+
+        if lista[medio] == objetivo:
+            return medio
+        if lista[medio] < objetivo:
+            izquierda = medio + 1
+        else:
+            derecha = medio - 1
+
+    return -1
+
+
+def main() -> None:
+    datos = [1, 2, 3, 4, 5, 6, 7, 8]
+
+    for objetivo in (6, 9):
+        print(f"Buscando {objetivo} en {datos}")
+        indice = busqueda_binaria(datos, objetivo, traza=True)
+
+        if indice == -1:
+            print(f"  {objetivo} no esta en la lista\n")
+        else:
+            print(f"  {objetivo} encontrado en el indice {indice}\n")
+
+
+if __name__ == "__main__":
+    main()
