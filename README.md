@@ -1,28 +1,39 @@
-# Análisis de Algoritmos — C++
+# Análisis de Algoritmos
 
-Repositorio de ejercicios de la materia. Cada ejercicio es un `.cpp` independiente dentro de una carpeta por tema.
+Repositorio de ejercicios de la materia. Hay dos partes independientes:
+
+- **C++** — ejercicios compilados, un `.cpp` por programa, organizados en carpetas por tema.
+- **Python** — ejercicios y notebooks de clase, en `python/`.
 
 ## Estructura
 
 ```
-00-plantilla/plantilla.cpp   # punto de partida para cada ejercicio
-01-<tema>/ejercicio.cpp      # un programa por archivo
-include/timer.hpp            # medición de tiempos (std::chrono)
-Makefile                     # compila cualquier archivo suelto
-bin/                         # binarios (ignorado por git)
+00-plantilla/plantilla.cpp     # punto de partida para cada ejercicio en C++
+01-algoritmosFaciles/*.cpp     # un programa por archivo
+include/timer.hpp              # medición de tiempos (std::chrono)
+Makefile                       # compila cualquier .cpp suelto
+compile_flags.txt              # flags que lee clangd
+bin/                           # binarios (ignorado por git)
+python/                        # ejercicios y notebooks de Python
 ```
 
-Convención: carpetas con prefijo numérico (`01-ordenamiento`, `02-recursion`, …) y archivos en `snake_case.cpp`.
+Convención: carpetas con prefijo numérico (`01-algoritmosFaciles`, `02-recursion`, …) y archivos en `camelCase` (`conversorDivisas.cpp`, `binarySearch.py`).
+
+---
+
+# C++
 
 ## Compilar y ejecutar
 
 ```sh
-make run     FILE=01-ordenamiento/bubble_sort.cpp   # -O0 -g (desarrollo)
-make release FILE=01-ordenamiento/bubble_sort.cpp   # -O2   (medir tiempos)
-make debug   FILE=01-ordenamiento/bubble_sort.cpp   # AddressSanitizer + UBSan
-make build   FILE=...                               # solo compilar → bin/bubble_sort
+make run     FILE=01-algoritmosFaciles/imc.cpp   # -O0 -g (desarrollo)
+make release FILE=01-algoritmosFaciles/imc.cpp   # -O2   (medir tiempos)
+make debug   FILE=01-algoritmosFaciles/imc.cpp   # AddressSanitizer + UBSan
+make build   FILE=...                            # solo compilar → bin/imc
 make clean
 ```
+
+`FILE` es obligatorio: el Makefile compila un archivo suelto a `bin/<nombre>`.
 
 En VS Code con el archivo abierto:
 
@@ -57,9 +68,46 @@ Reglas:
 - `F5` en VS Code lanza lldb. Desde terminal: `lldb bin/ejercicio` → `b main`, `r`, `n`, `s`, `p variable`, `bt`.
 - Para ver cómo se ve un `std::vector` u otros contenedores, CodeLLDB ya trae visualizadores.
 
+## Buenas prácticas para los ejercicios
+
+- Copia `00-plantilla/plantilla.cpp` para empezar.
+- `ios::sync_with_stdio(false); cin.tie(nullptr);` para entrada grande.
+- Compila siempre con `-Wall -Wextra -Wpedantic` (ya en el Makefile) y corrige los warnings.
+- Prefiere `size_t`/`long long` donde pueda haber overflow; `int` de 32 bits se desborda en ~2.1e9.
+- Comenta la complejidad (tiempo y espacio) al inicio de cada algoritmo.
+
+---
+
+# Python
+
+Los ejercicios viven en `python/`. No hay dependencias externas: todo corre con la librería estándar.
+
+```sh
+python3 python/edades.py          # ejecutar un ejercicio
+python3 python/binarySearch.py
+```
+
+Los `.ipynb` se abren directamente en VS Code (o con `jupyter notebook`); cada ejercicio está en su propia celda.
+
+| Archivo | Contenido |
+|---|---|
+| `binarySearch.py` | Búsqueda binaria sobre lista ordenada, con traza opcional de cada paso |
+| `edades.py` | Clasificación por etapa de vida con `if`/`elif` |
+| `edades2.py` | El mismo ejercicio con `match`/`case`; reutiliza `pedir_edad` de `edades.py` |
+| `238925.py` | Sombrero Seleccionador de Hogwarts (test de personalidad por puntajes) |
+| `Edades1.ipynb` | Versión en notebook del ejercicio de edades |
+| `EjerciciosFuncionesNativas_238925.ipynb` | Ejercicios de funciones nativas y variables |
+| `260826.ipynb` | Notas de la clase del 26/08 |
+
+`edades2.py` importa `pedir_edad` de `edades.py`; ambos archivos deben quedar en la misma carpeta.
+
+Convenciones: docstring al inicio con la complejidad cuando el archivo implementa un algoritmo, nombres de funciones y variables en español, y type hints donde ayuden a leer la firma.
+
+---
+
 ## Herramientas
 
-Ya instaladas en macOS: `clang++` (Apple clang), `make`, `clangd`, `lldb`.
+Ya instaladas en macOS: `clang++` (Apple clang), `make`, `clangd`, `lldb`, `python3`.
 
 Recomendado instalar:
 
@@ -68,16 +116,12 @@ brew install clang-format
 code --install-extension llvm-vs-code-extensions.vscode-clangd
 code --install-extension usernamehw.errorlens
 code --install-extension EditorConfig.EditorConfig
+code --install-extension ms-python.python
 ```
 
 `clangd` reemplaza el IntelliSense de la extensión *C/C++* de Microsoft (ya está desactivado en `.vscode/settings.json`). Se recomienda desinstalar *CMake Tools* y *C/C++ Runner*, no se usan aquí.
 
-El formato se aplica al guardar usando `.clang-format` (estilo Google, 4 espacios, 100 columnas).
-
-## Buenas prácticas para los ejercicios
-
-- Copia `00-plantilla/plantilla.cpp` para empezar.
-- `ios::sync_with_stdio(false); cin.tie(nullptr);` para entrada grande.
-- Compila siempre con `-Wall -Wextra -Wpedantic` (ya en el Makefile) y corrige los warnings.
-- Prefiere `size_t`/`long long` donde pueda haber overflow; `int` de 32 bits se desborda en ~2.1e9.
-- Comenta la complejidad (tiempo y espacio) al inicio de cada algoritmo.
+La indentación base (4 espacios, LF, sin espacios al final) la fija `.editorconfig`.
+Aún no hay un `.clang-format` en el repo: si quieres formato automático de C++, crea uno con
+`clang-format -style=Google -dump-config > .clang-format` y activa `"editor.formatOnSave": true`
+en `.vscode/settings.json`.
