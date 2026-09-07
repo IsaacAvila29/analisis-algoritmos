@@ -5,6 +5,9 @@
     "C_Cpp.errorSquiggles": "disabled",
     // Ocultar el botón ▷ "Debug C/C++ File" de cpptools (ignora launch.json y usa cppdbg)
     "C_Cpp.debugShortcut": false,
+    // Python: usar el virtualenv del proyecto para notebooks y scripts
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+
     "clangd.path": "/usr/bin/clangd",
     "clangd.arguments": [
         "--header-insertion=never",
