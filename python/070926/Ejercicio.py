@@ -26,4 +26,5 @@ for i in range(1, 10):
         print("El número elegido es igual a", numeros[i-1], "y", numeros[i], "y debería quedar en la posición", i-1)
     else:
         print("Este numero esta por encima del ultimo o por debajo del primero... no se que hacer")
-        break
+#este codigo funciona a medias
+
