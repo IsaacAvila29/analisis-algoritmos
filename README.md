@@ -14,7 +14,7 @@ include/timer.hpp              # medición de tiempos (std::chrono)
 Makefile                       # compila cualquier .cpp suelto
 compile_flags.txt              # flags que lee clangd
 bin/                           # binarios (ignorado por git)
-python/                        # ejercicios y notebooks de Python, organizados por tema
+python/                        # ejercicios y notebooks de Python, organizados por fecha de clase
 ```
 
 Convención: carpetas con prefijo numérico (`01-algoritmosFaciles`, `02-recursion`, …) y archivos en `camelCase` (`conversorDivisas.cpp`, `binarySearch.py`).
@@ -80,35 +80,34 @@ Reglas:
 
 # Python
 
-Los ejercicios viven en `python/`, organizados por tema (igual criterio que las carpetas de C++). No hay dependencias externas: todo corre con la librería estándar.
+Los ejercicios viven en `python/`, organizados por fecha de clase (`AAAA-MM-DD`). No hay dependencias externas: todo corre con la librería estándar.
 
 ```sh
-python3 python/03-estructurasControl/edades.py
-python3 python/02-busquedaOrdenamiento/binarySearch.py
+python3 python/2026-08-26/edades.py
+python3 python/2026-08-26/binarySearch.py
 ```
 
 Los `.ipynb` se abren directamente en VS Code (o con `jupyter notebook`); cada ejercicio está en su propia celda.
 
 ```
 python/
-  01-ciclos/                                  # for/while, range()
-      ciclos.py
-      ciclos.ipynb
-  02-busquedaOrdenamiento/                    # búsqueda binaria y ordenamiento
+  2026-08-26/
       binarySearch.py                         # búsqueda binaria, con traza opcional de cada paso
-      Ejercicio.py                            # genera 9 números random, los ordena y ubica un número elegido
-      test_ejercicio.py                       # tests de Ejercicio.py (lo corre como subproceso)
-  03-estructurasControl/                      # if/elif, match/case
       edades.py                               # clasificación por etapa de vida con if/elif
       edades2.py                              # mismo ejercicio con match/case; reutiliza pedir_edad de edades.py
       Edades1.ipynb                           # versión en notebook del ejercicio de edades
-      238925.py                               # Sombrero Seleccionador de Hogwarts (test de personalidad por puntajes)
-  04-funcionesNativas/
+      260826.ipynb                            # notas de la clase
+  2026-08-31/
       EjerciciosFuncionesNativas_238925.ipynb # funciones nativas y variables
-  05-estructurasDatos/                        # listas de diccionarios, funciones con estado global
-      main.py                                 # tiendita: agregar/vender/comprar/eliminar productos
-  notas/
-      260826.ipynb                            # notas de la clase del 26/08
+  2026-09-02/
+      238925.py                               # Sombrero Seleccionador de Hogwarts (test de personalidad por puntajes)
+  2026-09-07/
+      ciclos.py                               # for/while, range()
+      ciclos.ipynb
+      Ejercicio.py                            # genera 9 números random, los ordena y ubica un número elegido
+      test_ejercicio.py                       # tests de Ejercicio.py (lo corre como subproceso)
+  2026-09-09/
+      main.py                                 # tiendita: agregar/vender/comprar/eliminar productos (listas de diccionarios)
 ```
 
 `edades2.py` importa `pedir_edad` de `edades.py`; ambos archivos deben quedar en la misma carpeta.
