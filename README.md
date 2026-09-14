@@ -14,7 +14,7 @@ include/timer.hpp              # medición de tiempos (std::chrono)
 Makefile                       # compila cualquier .cpp suelto
 compile_flags.txt              # flags que lee clangd
 bin/                           # binarios (ignorado por git)
-python/                        # ejercicios y notebooks de Python
+python/                        # ejercicios y notebooks de Python, organizados por tema
 ```
 
 Convención: carpetas con prefijo numérico (`01-algoritmosFaciles`, `02-recursion`, …) y archivos en `camelCase` (`conversorDivisas.cpp`, `binarySearch.py`).
@@ -80,26 +80,39 @@ Reglas:
 
 # Python
 
-Los ejercicios viven en `python/`. No hay dependencias externas: todo corre con la librería estándar.
+Los ejercicios viven en `python/`, organizados por tema (igual criterio que las carpetas de C++). No hay dependencias externas: todo corre con la librería estándar.
 
 ```sh
-python3 python/edades.py          # ejecutar un ejercicio
-python3 python/binarySearch.py
+python3 python/03-estructurasControl/edades.py
+python3 python/02-busquedaOrdenamiento/binarySearch.py
 ```
 
 Los `.ipynb` se abren directamente en VS Code (o con `jupyter notebook`); cada ejercicio está en su propia celda.
 
-| Archivo | Contenido |
-|---|---|
-| `binarySearch.py` | Búsqueda binaria sobre lista ordenada, con traza opcional de cada paso |
-| `edades.py` | Clasificación por etapa de vida con `if`/`elif` |
-| `edades2.py` | El mismo ejercicio con `match`/`case`; reutiliza `pedir_edad` de `edades.py` |
-| `238925.py` | Sombrero Seleccionador de Hogwarts (test de personalidad por puntajes) |
-| `Edades1.ipynb` | Versión en notebook del ejercicio de edades |
-| `EjerciciosFuncionesNativas_238925.ipynb` | Ejercicios de funciones nativas y variables |
-| `260826.ipynb` | Notas de la clase del 26/08 |
+```
+python/
+  01-ciclos/                                  # for/while, range()
+      ciclos.py
+      ciclos.ipynb
+  02-busquedaOrdenamiento/                    # búsqueda binaria y ordenamiento
+      binarySearch.py                         # búsqueda binaria, con traza opcional de cada paso
+      Ejercicio.py                            # genera 9 números random, los ordena y ubica un número elegido
+      test_ejercicio.py                       # tests de Ejercicio.py (lo corre como subproceso)
+  03-estructurasControl/                      # if/elif, match/case
+      edades.py                               # clasificación por etapa de vida con if/elif
+      edades2.py                              # mismo ejercicio con match/case; reutiliza pedir_edad de edades.py
+      Edades1.ipynb                           # versión en notebook del ejercicio de edades
+      238925.py                               # Sombrero Seleccionador de Hogwarts (test de personalidad por puntajes)
+  04-funcionesNativas/
+      EjerciciosFuncionesNativas_238925.ipynb # funciones nativas y variables
+  05-estructurasDatos/                        # listas de diccionarios, funciones con estado global
+      main.py                                 # tiendita: agregar/vender/comprar/eliminar productos
+  notas/
+      260826.ipynb                            # notas de la clase del 26/08
+```
 
 `edades2.py` importa `pedir_edad` de `edades.py`; ambos archivos deben quedar en la misma carpeta.
+`test_ejercicio.py` ubica a `Ejercicio.py` por ruta relativa (`Path(__file__).parent`); ambos deben quedar en la misma carpeta.
 
 Convenciones: docstring al inicio con la complejidad cuando el archivo implementa un algoritmo, nombres de funciones y variables en español, y type hints donde ayuden a leer la firma.
 
