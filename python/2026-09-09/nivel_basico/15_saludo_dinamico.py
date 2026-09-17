@@ -1,8 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Ejercicio 15: Función para generar un mensaje de saludo dinámico con un nombre"""
-
-
 def generar_saludo(nombre):
     return f"¡Hola, {nombre}! Bienvenido/a."
 
@@ -18,5 +13,4 @@ def main():
     print(generar_saludo(nombre))
 
 
-if __name__ == "__main__":
-    main()
+main()

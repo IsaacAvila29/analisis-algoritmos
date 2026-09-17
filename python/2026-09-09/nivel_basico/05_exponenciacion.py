@@ -1,8 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Ejercicio 5: Cálculo de exponenciación con el operador **"""
-
-
 def main():
     print("=== Exponenciación ===")
     try:
@@ -16,5 +11,4 @@ def main():
     print(f"Resultado: {base} ** {exponente} = {resultado}")
 
 
-if __name__ == "__main__":
-    main()
+main()
