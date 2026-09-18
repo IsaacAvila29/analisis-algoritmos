@@ -28,7 +28,8 @@ def leer_lista():
     lista = []
     for valor in valores:
         try:
-            lista.append(float(valor))
+            numero = float(valor)
+            lista.append(int(numero) if numero.is_integer() else numero)
         except ValueError:
             print(f"Aviso: '{valor}' no es un número válido y será ignorado.")
     return lista

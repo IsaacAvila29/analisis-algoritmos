@@ -14,6 +14,9 @@ def main():
         print(f"Resultado: {resultado}")
 
         respuesta = input("¿Deseas lanzar de nuevo? (s/n): ").strip().lower()
+        while respuesta not in ("s", "n"):
+            respuesta = input("Respuesta no válida, ingresa 's' o 'n': ").strip().lower()
+
         continuar = respuesta == "s"
 
     print("Fin de la simulación.")
