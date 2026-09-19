@@ -6,6 +6,7 @@ import random
 
 # ---------- Colecciones de datos ----------
 
+# Lista VIP: entran sin importar ningun otro filtro (nepotismo puro).
 LISTA_VIP = {
     "el profe heriberto",
     "el santi",
@@ -13,6 +14,7 @@ LISTA_VIP = {
     "frank de la o",
 }
 
+# Nombres tradicionales que el cadenero rechaza por prejuicio sociocultural.
 NOMBRES_RESTRINGIDOS = {
     "guadalupe",
     "xochitl",
@@ -26,7 +28,8 @@ NOMBRES_RESTRINGIDOS = {
     "hermenegildo",
 }
 
-GENEROS_MUJER = {"f", "fem", "femenino", "mujer", "m u j e r", "chica", "dama"}
+# Formas en que alguien puede indicar que es mujer.
+GENEROS_MUJER = {"f", "fem", "femenino", "mujer", "chica", "dama"}
 
 FRASES_VIP = [
     "Pase, VIP",
@@ -60,7 +63,7 @@ FRASES_GENERO = [
 
 FRASES_EDAD = [
     "Vayase al kinder.",
-    "A mimir, niño.",
+    "A mimir, nino.",
     "Aqui no hay Choco Milk.",
     "Panalera afuera.",
     "Trae a tu tutor.",
@@ -76,20 +79,30 @@ FRASES_ONOMASTICO = [
     "Ay no, malinches, para atras.",
 ]
 
+EDAD_MINIMA = 18
+COMANDO_SALIR = "salir"
+
 
 # ---------- Normalizacion ----------
 
 def normalizar(texto):
-    """Deja el texto en minusculas, sin espacios sobrantes ni acentos."""
+    """Deja el texto en minusculas, sin espacios sobrantes ni acentos.
+
+    Asi "  XÓCHITL " y "xochitl" se comparan igual.
+    """
     limpio = texto.strip().lower()
     tabla = str.maketrans("áéíóúüñ", "aeiouun")
-    return limpio.translate(tabla)
+    return " ".join(limpio.translate(tabla).split())
 
 
 # ---------- Captura de datos ----------
 
 def pedir_nombre():
-    return input("Nombre del solicitante (o 'salir' para cerrar): ").strip()
+    return input(f"Nombre del solicitante (o '{COMANDO_SALIR}' para cerrar): ").strip()
+
+
+def pedir_genero():
+    return input("Genero (F / M / mujer / hombre): ").strip()
 
 
 def pedir_edad():
@@ -108,48 +121,48 @@ def pedir_edad():
         return edad
 
 
-def pedir_genero():
-    return input("Genero (F / M / mujer / hombre): ").strip()
-
-
 # ---------- Logica de negocio ----------
 
 def es_vip(nombre):
+    """True si el nombre esta en la lista de invitados por nepotismo."""
     return normalizar(nombre) in LISTA_VIP
 
 
 def es_mujer(genero):
+    """True si el genero capturado cuenta como mujer."""
     return normalizar(genero) in GENEROS_MUJER
 
 
 def tiene_nombre_restringido(nombre):
-    """Revisa si alguna palabra del nombre esta en la lista de prejuicio."""
-    palabras = normalizar(nombre).split()
-    for palabra in palabras:
+    """True si alguna palabra del nombre esta en la lista de prejuicio."""
+    for palabra in normalizar(nombre).split():
         if palabra in NOMBRES_RESTRINGIDOS:
             return True
     return False
 
 
-def veredicto_por_genero(genero):
-    """Regresa el mensaje de rechazo si el genero no pasa, o None si pasa."""
+def evaluar(nombre, genero, edad):
+    """Aplica la jerarquia del proyecto y regresa (acceso, mensaje).
+
+    El orden es el que pide la rubrica:
+        1. Lista VIP    -> entra sin importar lo demas
+        2. Genero       -> solo mujeres
+        3. Mayoria de edad
+        4. Filtro onomastico
+    """
+    if es_vip(nombre):
+        return True, random.choice(FRASES_VIP)
+
     if not es_mujer(genero):
-        return random.choice(FRASES_GENERO)
-    return None
+        return False, random.choice(FRASES_GENERO)
 
+    if edad < EDAD_MINIMA:
+        return False, random.choice(FRASES_EDAD)
 
-def veredicto_por_edad(edad):
-    """Regresa el mensaje de rechazo si es menor de edad, o None si pasa."""
-    if edad < 18:
-        return random.choice(FRASES_EDAD)
-    return None
-
-
-def veredicto_por_nombre(nombre):
-    """Regresa el mensaje de rechazo por prejuicio, o None si pasa."""
     if tiene_nombre_restringido(nombre):
-        return random.choice(FRASES_ONOMASTICO)
-    return None
+        return False, random.choice(FRASES_ONOMASTICO)
+
+    return True, random.choice(FRASES_ACCESO)
 
 
 # ---------- Flujo principal ----------
@@ -158,57 +171,49 @@ def anunciar(nombre, acceso, mensaje):
     """Imprime el veredicto del cadenero para una persona."""
     print("-" * 45)
     print(f"{nombre.title()}: {mensaje}")
-    print("ACCESO AUTORIZADO" if acceso else "ACCESO DENEGADO")
+    #Si, estos emojis fueron asi puestos a proposito
+    print("✅ ACCESO AUTORIZADO" if acceso else "❌ ACCESO DENEGADO")
     print("-" * 45 + "\n")
 
 
 def atender_persona(nombre):
     """Captura los datos que hagan falta y regresa True si la persona entra.
 
-    Los datos se piden conforme se necesitan: si el genero ya la descalifica,
-    el cadenero la bota sin molestarse en preguntarle la edad.
+    Los datos se piden solo mientras sirvan: al VIP no se le pregunta nada,
+    y a quien no pasa el filtro de genero no se le pide la edad.
     """
-    vip = es_vip(nombre)
+    if es_vip(nombre):
+        acceso, mensaje = evaluar(nombre, "", 0)
+        anunciar(nombre, acceso, mensaje)
+        return acceso
 
     genero = pedir_genero()
-    rechazo = veredicto_por_genero(genero)
-    if rechazo is not None and not vip:
-        anunciar(nombre, False, rechazo)
+    if not es_mujer(genero):
+        anunciar(nombre, False, random.choice(FRASES_GENERO))
         return False
 
     edad = pedir_edad()
-    rechazo = veredicto_por_edad(edad)
-    if rechazo is not None and not vip:
-        anunciar(nombre, False, rechazo)
-        return False
-
-    # El VIP se salta cualquier filtro por nepotismo.
-    if vip:
-        anunciar(nombre, True, random.choice(FRASES_VIP))
-        return True
-
-    rechazo = veredicto_por_nombre(nombre)
-    if rechazo is not None:
-        anunciar(nombre, False, rechazo)
-        return False
-
-    anunciar(nombre, True, random.choice(FRASES_ACCESO))
-    return True
+    acceso, mensaje = evaluar(nombre, genero, edad)
+    anunciar(nombre, acceso, mensaje)
+    return acceso
 
 
 def atender_fila():
+    """Atiende personas una tras otra hasta que alguien escriba 'salir'."""
     admitidos = 0
     rechazados = 0
 
     print("=" * 45)
     print("   PASAR LA MATERIA (Night Club)")
-    print("   Escribe 'salir' en el nombre para cerrar")
+    print(f"   Escribe '{COMANDO_SALIR}' en el nombre para cerrar")
     print("=" * 45)
 
     while True:
         nombre = pedir_nombre()
 
-        if normalizar(nombre) == "salir":
+
+
+        if normalizar(nombre) == COMANDO_SALIR:
             break
 
         if nombre == "":
@@ -225,9 +230,7 @@ def atender_fila():
     print(f"Rechazados: {rechazados}")
 
 
-
-#no termino de entender porque la IA hace esto
-#Segun la explicacion es para que el script se ejecute directamente desde la terminal y no al ser importado como módulo.
+# Esto hace que la fila solo corra si ejecutas el archivo directamente,
+# y no cuando alguien lo importa para usar sus funciones (como los tests).
 if __name__ == "__main__":
     atender_fila()
-#Si funciona no le muevo
