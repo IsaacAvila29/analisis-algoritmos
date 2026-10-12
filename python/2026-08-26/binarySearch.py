@@ -5,7 +5,7 @@ Precondicion: `lista` debe estar ordenada de forma ascendente.
 """
 
 
-def busqueda_binaria(lista: list[int], objetivo: int, traza: bool = False) -> int:
+def busqueda_binaria(lista: list[int], objetivo: int) -> int:
     """Devuelve el indice de `objetivo` en `lista`, o -1 si no existe.
 
     Con traza=True imprime cada paso (util para ver como se parte el rango).
@@ -15,9 +15,6 @@ def busqueda_binaria(lista: list[int], objetivo: int, traza: bool = False) -> in
 
     while izquierda <= derecha:
         medio = (izquierda + derecha) // 2
-
-        if traza:
-            print(f"  izquierda={izquierda} derecha={derecha} medio={medio} valor={lista[medio]}")
 
         if lista[medio] == objetivo:
             return medio
@@ -34,6 +31,7 @@ def main() -> None:
 
     for objetivo in (6, 9):
         print(f"Buscando {objetivo} en {datos}")
+
         indice = busqueda_binaria(datos, objetivo, traza=True)
 
         if indice == -1:
